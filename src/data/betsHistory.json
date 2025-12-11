@@ -1,0 +1,42 @@
+{
+  "parlays": [
+    {
+      "id": "parlay-week13-2025",
+      "week": 13,
+      "season": 2025,
+      "bets": [
+        {
+          "week": 13,
+          "season": 2025,
+          "playerName": "Patrick Mahomes",
+          "odds": 1200,
+          "betAmount": 10,
+          "result": "loss",
+          "scored": false
+        },
+        {
+          "week": 13,
+          "season": 2025,
+          "playerName": "Christian McCaffrey",
+          "odds": 350,
+          "betAmount": 10,
+          "result": "loss",
+          "scored": true
+        },
+        {
+          "week": 13,
+          "season": 2025,
+          "playerName": "CeeDee Lamb",
+          "odds": 400,
+          "betAmount": 10,
+          "result": "loss",
+          "scored": false
+        }
+      ],
+      "totalOdds": 15680,
+      "totalAmount": 10,
+      "result": "loss",
+      "payout": 0
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+export const SEASON_PERFORMANCE_TITLE = '2025 Season Performance';
+export const SEASON_PERFORMANCE_SUBTITLE = 'Track your betting patterns and success rate';
+export const WIN_RATE_LABEL = 'Win Rate';
+export const NET_PROFIT_LABEL = 'Net Profit';
+export const ROI_PREFIX = 'ROI: ';
+export const TOTAL_WAGERED_LABEL = 'Total Wagered';
+export const ACROSS_TEXT = 'Across';
+export const PARLAYS_TEXT = 'parlays';
+export const TOTAL_PAYOUT_LABEL = 'Total Payout';
+export const FROM_WINNING_BETS_TEXT = 'From winning bets';
+export const MANUAL_TRACKING_TITLE = 'Manual Tracking';
+export const MANUAL_TRACKING_TEXT = 'Currently tracking bets manually via JSON. Update';
+export const MANUAL_TRACKING_FILE = 'src/data/betsHistory.json';
+export const MANUAL_TRACKING_TEXT_END = 'to add new parlays and results. Future versions will include database integration for automatic tracking.';
