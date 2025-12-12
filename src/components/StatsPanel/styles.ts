@@ -1,19 +1,21 @@
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
-  background: ${({ theme }) => theme.colors.background.card};
-  backdrop-filter: blur(${({ theme }) => theme.blur.lg});
-  -webkit-backdrop-filter: blur(${({ theme }) => theme.blur.lg});
-  border: 1px solid ${({ theme }) => theme.colors.border.light};
-  border-radius: ${({ theme }) => theme.borderRadius.xl};
-  box-shadow: ${({ theme }) => theme.shadows.glass};
-  padding: ${({ theme }) => theme.spacing.xl};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
-  transition: all ${({ theme }) => theme.transitions.fast};
+  ${({ theme }) => css`
+    background: ${theme.colors.background.card};
+    backdrop-filter: blur(${theme.blur.lg});
+    -webkit-backdrop-filter: blur(${theme.blur.lg});
+    border: 1px solid ${theme.colors.border.light};
+    border-radius: ${theme.borderRadius.xl};
+    box-shadow: ${theme.shadows.glass};
+    padding: ${theme.spacing.xl};
+    margin-bottom: ${theme.spacing.xl};
+    transition: all ${theme.transitions.fast};
 
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.border.medium};
-  }
+    &:hover {
+      border-color: ${theme.colors.border.medium};
+    }
+  `}
 `;
 
 export const Header = styled.div`
@@ -21,14 +23,18 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: ${({ theme }) => theme.typography.fontSize.xxl};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-  color: ${({ theme }) => theme.colors.text.primary};
+  ${({ theme }) => css`
+    font-size: ${theme.typography.fontSize.xxl};
+    margin-bottom: ${theme.spacing.xs};
+    color: ${theme.colors.text.primary};
+  `}
 `;
 
 export const Subtitle = styled.p`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => css`
+    font-size: ${theme.typography.fontSize.sm};
+    color: ${theme.colors.text.secondary};
+  `}
 `;
 
 export const StatsGrid = styled.div`
@@ -39,55 +45,64 @@ export const StatsGrid = styled.div`
 `;
 
 export const StatCard = styled.div`
-  background: ${({ theme }) => theme.colors.background.glass};
-  backdrop-filter: blur(${({ theme }) => theme.blur.md});
-  -webkit-backdrop-filter: blur(${({ theme }) => theme.blur.md});
-  border: 1px solid ${({ theme }) => theme.colors.border.light};
-  padding: ${({ theme }) => theme.spacing.lg};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  text-align: center;
-  transition: all ${({ theme }) => theme.transitions.fast};
+  ${({ theme }) => css`
+    background: ${theme.colors.background.glass};
+    backdrop-filter: blur(${theme.blur.md});
+    -webkit-backdrop-filter: blur(${theme.blur.md});
+    border: 1px solid ${theme.colors.border.light};
+    padding: ${theme.spacing.lg};
+    border-radius: ${theme.borderRadius.lg};
+    text-align: center;
+    transition: all ${theme.transitions.fast};
 
-  &:hover {
-    transform: translateY(-4px);
-    border-color: ${({ theme }) => theme.colors.border.medium};
-    box-shadow: ${({ theme }) => theme.shadows.md};
-  }
+    &:hover {
+      transform: translateY(-4px);
+      border-color: ${theme.colors.border.medium};
+      box-shadow: ${theme.shadows.md};
+    }
+  `}
 `;
 
 export const StatIcon = styled.div<{ success?: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  background: ${({ theme, success }) =>
-    success ? `${theme.colors.success}22` : `${theme.colors.accent}22`};
-  color: ${({ theme, success }) =>
-    success ? theme.colors.success : theme.colors.accent};
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  ${({ theme, success }) => css`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: ${theme.borderRadius.md};
+    background: ${success
+      ? `${theme.colors.success}22`
+      : `${theme.colors.accent}22`};
+    color: ${success ? theme.colors.success : theme.colors.accent};
+    margin-bottom: ${theme.spacing.sm};
+  `}
 `;
 
 export const StatValue = styled.div<{ success?: boolean; profit?: boolean }>`
-  font-size: ${({ theme }) => theme.typography.fontSize.xxl};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
-  color: ${({ theme, success, profit }) => {
-    if (profit !== undefined) {
-      return profit ? theme.colors.success : theme.colors.error;
-    }
-    return success ? theme.colors.success : theme.colors.text.primary;
-  }};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  ${({ theme, success, profit }) => css`
+    font-size: ${theme.typography.fontSize.xxl};
+    font-weight: ${theme.typography.fontWeight.bold};
+    color: ${profit !== undefined
+      ? profit
+        ? theme.colors.success
+        : theme.colors.error
+      : success
+      ? theme.colors.success
+      : theme.colors.text.primary};
+    margin-bottom: ${theme.spacing.xs};
+  `}
 `;
 
 export const StatLabel = styled.div`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  ${({ theme }) => css`
+    font-size: ${theme.typography.fontSize.sm};
+    color: ${theme.colors.text.secondary};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: ${theme.spacing.xs};
+    font-weight: ${theme.typography.fontWeight.medium};
+  `}
 `;
 
 export const StatDetail = styled.div`
@@ -96,36 +111,42 @@ export const StatDetail = styled.div`
 `;
 
 export const InfoNote = styled.div`
-  background: ${({ theme }) => theme.colors.secondary}22;
-  backdrop-filter: blur(${({ theme }) => theme.blur.sm});
-  -webkit-backdrop-filter: blur(${({ theme }) => theme.blur.sm});
-  border-left: 3px solid ${({ theme }) => theme.colors.accent};
-  border: 1px solid ${({ theme }) => theme.colors.border.light};
-  border-left: 3px solid ${({ theme }) => theme.colors.accent};
-  padding: ${({ theme }) => theme.spacing.md};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  ${({ theme }) => css`
+    background: ${theme.colors.secondary}22;
+    backdrop-filter: blur(${theme.blur.sm});
+    -webkit-backdrop-filter: blur(${theme.blur.sm});
+    border-left: 3px solid ${theme.colors.accent};
+    border: 1px solid ${theme.colors.border.light};
+    border-left: 3px solid ${theme.colors.accent};
+    padding: ${theme.spacing.md};
+    border-radius: ${theme.borderRadius.lg};
+  `}
 `;
 
 export const NoteTitle = styled.div`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.semibold};
-  color: ${({ theme }) => theme.colors.accent};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  ${({ theme }) => css`
+    font-size: ${theme.typography.fontSize.sm};
+    font-weight: ${theme.typography.fontWeight.semibold};
+    color: ${theme.colors.accent};
+    margin-bottom: ${theme.spacing.xs};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  `}
 `;
 
 export const NoteText = styled.div`
-  font-size: ${({ theme }) => theme.typography.fontSize.sm};
-  color: ${({ theme }) => theme.colors.text.secondary};
-  line-height: 1.6;
+  ${({ theme }) => css`
+    font-size: ${theme.typography.fontSize.sm};
+    color: ${theme.colors.text.secondary};
+    line-height: 1.6;
 
-  code {
-    background: ${({ theme }) => theme.colors.background.main};
-    padding: 2px 6px;
-    border-radius: ${({ theme }) => theme.borderRadius.sm};
-    font-family: ${({ theme }) => theme.typography.fontFamily.mono};
-    font-size: ${({ theme }) => theme.typography.fontSize.xs};
-    color: ${({ theme }) => theme.colors.accent};
-  }
+    code {
+      background: ${theme.colors.background.main};
+      padding: 2px 6px;
+      border-radius: ${theme.borderRadius.sm};
+      font-family: ${theme.typography.fontFamily.mono};
+      font-size: ${theme.typography.fontSize.xs};
+      color: ${theme.colors.accent};
+    }
+  `}
 `;

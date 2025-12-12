@@ -1,6 +1,6 @@
-import { TrendingUp, TrendingDown, DollarSign, Target } from 'lucide-react';
-import { calculateSeasonStats } from '../../services/betTracking';
-import { StatsPanelProps } from './types';
+import { TrendingUp, TrendingDown, DollarSign, Target } from "lucide-react";
+import { StatsPanelProps } from "./types";
+import { useStatsPanelData } from "./hooks/index";
 import {
   SEASON_PERFORMANCE_TITLE,
   SEASON_PERFORMANCE_SUBTITLE,
@@ -16,68 +16,93 @@ import {
   MANUAL_TRACKING_TEXT,
   MANUAL_TRACKING_FILE,
   MANUAL_TRACKING_TEXT_END,
-} from './constants';
-import * as S from './styles';
+} from "./constants";
+import {
+  Container,
+  Header,
+  Title,
+  Subtitle,
+  StatsGrid,
+  StatCard,
+  StatIcon,
+  StatValue,
+  StatLabel,
+  StatDetail,
+  InfoNote,
+  NoteTitle,
+  NoteText,
+} from "./styles";
 
 export const StatsPanel: React.FC<StatsPanelProps> = ({ season }) => {
-  const stats = calculateSeasonStats(season);
+  const { stats, isWinRateSuccessful, isNetProfitPositive } =
+    useStatsPanelData(season);
 
   return (
-    <S.Container>
-      <S.Header>
-        <S.Title>{SEASON_PERFORMANCE_TITLE}</S.Title>
-        <S.Subtitle>{SEASON_PERFORMANCE_SUBTITLE}</S.Subtitle>
-      </S.Header>
+    <Container>
+      <Header>
+        <Title>{SEASON_PERFORMANCE_TITLE}</Title>
+        <Subtitle>{SEASON_PERFORMANCE_SUBTITLE}</Subtitle>
+      </Header>
 
-      <S.StatsGrid>
-        <S.StatCard>
-          <S.StatIcon success={stats.winRate >= 50}>
+      <StatsGrid>
+        <StatCard>
+          <StatIcon success={isWinRateSuccessful}>
             <Target size={24} />
-          </S.StatIcon>
-          <S.StatValue>{stats.winRate}%</S.StatValue>
-          <S.StatLabel>{WIN_RATE_LABEL}</S.StatLabel>
-          <S.StatDetail>
+          </StatIcon>
+          <StatValue>{stats.winRate}%</StatValue>
+          <StatLabel>{WIN_RATE_LABEL}</StatLabel>
+          <StatDetail>
             {stats.wins}W - {stats.losses}L
             {stats.pending > 0 && ` - ${stats.pending}P`}
-          </S.StatDetail>
-        </S.StatCard>
+          </StatDetail>
+        </StatCard>
 
-        <S.StatCard>
-          <S.StatIcon success={stats.netProfit >= 0}>
-            {stats.netProfit >= 0 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
-          </S.StatIcon>
-          <S.StatValue profit={stats.netProfit >= 0}>
-            {stats.netProfit >= 0 ? '+' : ''}${stats.netProfit.toFixed(2)}
-          </S.StatValue>
-          <S.StatLabel>{NET_PROFIT_LABEL}</S.StatLabel>
-          <S.StatDetail>{ROI_PREFIX}{stats.roi}%</S.StatDetail>
-        </S.StatCard>
+        <StatCard>
+          <StatIcon success={isNetProfitPositive}>
+            {isNetProfitPositive ? (
+              <TrendingUp size={24} />
+            ) : (
+              <TrendingDown size={24} />
+            )}
+          </StatIcon>
+          <StatValue profit={isNetProfitPositive}>
+            {isNetProfitPositive ? "+" : ""}${stats.netProfit.toFixed(2)}
+          </StatValue>
+          <StatLabel>{NET_PROFIT_LABEL}</StatLabel>
+          <StatDetail>
+            {ROI_PREFIX}
+            {stats.roi}%
+          </StatDetail>
+        </StatCard>
 
-        <S.StatCard>
-          <S.StatIcon>
+        <StatCard>
+          <StatIcon>
             <DollarSign size={24} />
-          </S.StatIcon>
-          <S.StatValue>${stats.totalWagered.toFixed(2)}</S.StatValue>
-          <S.StatLabel>{TOTAL_WAGERED_LABEL}</S.StatLabel>
-          <S.StatDetail>{ACROSS_TEXT} {stats.totalParlays} {PARLAYS_TEXT}</S.StatDetail>
-        </S.StatCard>
+          </StatIcon>
+          <StatValue>${stats.totalWagered.toFixed(2)}</StatValue>
+          <StatLabel>{TOTAL_WAGERED_LABEL}</StatLabel>
+          <StatDetail>
+            {ACROSS_TEXT} {stats.totalParlays} {PARLAYS_TEXT}
+          </StatDetail>
+        </StatCard>
 
-        <S.StatCard>
-          <S.StatIcon success>
+        <StatCard>
+          <StatIcon success>
             <DollarSign size={24} />
-          </S.StatIcon>
-          <S.StatValue success>${stats.totalPayout.toFixed(2)}</S.StatValue>
-          <S.StatLabel>{TOTAL_PAYOUT_LABEL}</S.StatLabel>
-          <S.StatDetail>{FROM_WINNING_BETS_TEXT}</S.StatDetail>
-        </S.StatCard>
-      </S.StatsGrid>
+          </StatIcon>
+          <StatValue success>${stats.totalPayout.toFixed(2)}</StatValue>
+          <StatLabel>{TOTAL_PAYOUT_LABEL}</StatLabel>
+          <StatDetail>{FROM_WINNING_BETS_TEXT}</StatDetail>
+        </StatCard>
+      </StatsGrid>
 
-      <S.InfoNote>
-        <S.NoteTitle>{MANUAL_TRACKING_TITLE}</S.NoteTitle>
-        <S.NoteText>
-          {MANUAL_TRACKING_TEXT} <code>{MANUAL_TRACKING_FILE}</code> {MANUAL_TRACKING_TEXT_END}
-        </S.NoteText>
-      </S.InfoNote>
-    </S.Container>
+      <InfoNote>
+        <NoteTitle>{MANUAL_TRACKING_TITLE}</NoteTitle>
+        <NoteText>
+          {MANUAL_TRACKING_TEXT} <code>{MANUAL_TRACKING_FILE}</code>{" "}
+          {MANUAL_TRACKING_TEXT_END}
+        </NoteText>
+      </InfoNote>
+    </Container>
   );
 };
