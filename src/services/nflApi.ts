@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { Game, Team, Weather, HeadToHeadTDs, TDScorer } from '../types';
+import axios from "axios";
+import { Game, Team, Weather, HeadToHeadTDs, TDScorer } from "../types";
 
 /**
  * NFL API Service - Using ESPN's unofficial API
@@ -14,7 +14,8 @@ import { Game, Team, Weather, HeadToHeadTDs, TDScorer } from '../types';
  * TODO: Integrate with a stats API for real-time rankings (e.g., NFL.com, Pro Football Reference)
  */
 
-const ESPN_API_BASE = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
+const ESPN_API_BASE =
+  "https://site.api.espn.com/apis/site/v2/sports/football/nfl";
 
 interface ESPNGame {
   id: string;
@@ -36,7 +37,7 @@ interface ESPNGame {
         abbreviation: string;
         logo: string;
       };
-      homeAway: 'home' | 'away';
+      homeAway: "home" | "away";
       score?: string;
     }>;
     odds?: Array<{
@@ -61,77 +62,251 @@ interface ESPNGame {
  * Mock team rankings - TODO: Replace with real stats API
  * These should be fetched from a statistics API and updated regularly
  */
-const TEAM_RANKINGS: Record<string, { passOffenseRank: number; rushOffenseRank: number; passDefenseRank: number; rushDefenseRank: number }> = {
-  'KC': { passOffenseRank: 3, rushOffenseRank: 12, passDefenseRank: 8, rushDefenseRank: 15 },
-  'BUF': { passOffenseRank: 2, rushOffenseRank: 18, passDefenseRank: 5, rushDefenseRank: 10 },
-  'SF': { passOffenseRank: 5, rushOffenseRank: 4, passDefenseRank: 3, rushDefenseRank: 7 },
-  'DAL': { passOffenseRank: 1, rushOffenseRank: 15, passDefenseRank: 12, rushDefenseRank: 20 },
-  'PHI': { passOffenseRank: 8, rushOffenseRank: 2, passDefenseRank: 6, rushDefenseRank: 4 },
-  'MIA': { passOffenseRank: 4, rushOffenseRank: 22, passDefenseRank: 18, rushDefenseRank: 25 },
-  'BAL': { passOffenseRank: 10, rushOffenseRank: 1, passDefenseRank: 14, rushDefenseRank: 12 },
-  'DET': { passOffenseRank: 6, rushOffenseRank: 5, passDefenseRank: 22, rushDefenseRank: 28 },
-  'GB': { passOffenseRank: 11, rushOffenseRank: 8, passDefenseRank: 9, rushDefenseRank: 11 },
-  'LAR': { passOffenseRank: 7, rushOffenseRank: 19, passDefenseRank: 15, rushDefenseRank: 16 },
-  'CIN': { passOffenseRank: 9, rushOffenseRank: 20, passDefenseRank: 19, rushDefenseRank: 17 },
-  'LAC': { passOffenseRank: 12, rushOffenseRank: 13, passDefenseRank: 10, rushDefenseRank: 13 },
-  'TB': { passOffenseRank: 13, rushOffenseRank: 16, passDefenseRank: 16, rushDefenseRank: 18 },
-  'MIN': { passOffenseRank: 14, rushOffenseRank: 14, passDefenseRank: 11, rushDefenseRank: 14 },
-  'ATL': { passOffenseRank: 15, rushOffenseRank: 11, passDefenseRank: 20, rushDefenseRank: 21 },
-  'SEA': { passOffenseRank: 16, rushOffenseRank: 10, passDefenseRank: 17, rushDefenseRank: 19 },
-  'PIT': { passOffenseRank: 17, rushOffenseRank: 17, passDefenseRank: 7, rushDefenseRank: 8 },
-  'HOU': { passOffenseRank: 18, rushOffenseRank: 9, passDefenseRank: 13, rushDefenseRank: 9 },
-  'NO': { passOffenseRank: 19, rushOffenseRank: 21, passDefenseRank: 21, rushDefenseRank: 22 },
-  'IND': { passOffenseRank: 20, rushOffenseRank: 7, passDefenseRank: 23, rushDefenseRank: 23 },
-  'ARI': { passOffenseRank: 21, rushOffenseRank: 23, passDefenseRank: 24, rushDefenseRank: 24 },
-  'WAS': { passOffenseRank: 22, rushOffenseRank: 6, passDefenseRank: 25, rushDefenseRank: 26 },
-  'JAX': { passOffenseRank: 23, rushOffenseRank: 24, passDefenseRank: 26, rushDefenseRank: 27 },
-  'DEN': { passOffenseRank: 24, rushOffenseRank: 25, passDefenseRank: 4, rushDefenseRank: 6 },
-  'CLE': { passOffenseRank: 25, rushOffenseRank: 26, passDefenseRank: 2, rushDefenseRank: 3 },
-  'TEN': { passOffenseRank: 26, rushOffenseRank: 27, passDefenseRank: 27, rushDefenseRank: 29 },
-  'CHI': { passOffenseRank: 27, rushOffenseRank: 28, passDefenseRank: 28, rushDefenseRank: 30 },
-  'LV': { passOffenseRank: 28, rushOffenseRank: 29, passDefenseRank: 29, rushDefenseRank: 31 },
-  'NYJ': { passOffenseRank: 29, rushOffenseRank: 30, passDefenseRank: 1, rushDefenseRank: 2 },
-  'NYG': { passOffenseRank: 30, rushOffenseRank: 31, passDefenseRank: 30, rushDefenseRank: 32 },
-  'NE': { passOffenseRank: 31, rushOffenseRank: 32, passDefenseRank: 31, rushDefenseRank: 5 },
-  'CAR': { passOffenseRank: 32, rushOffenseRank: 3, passDefenseRank: 32, rushDefenseRank: 1 },
+const TEAM_RANKINGS: Record<
+  string,
+  {
+    passOffenseRank: number;
+    rushOffenseRank: number;
+    passDefenseRank: number;
+    rushDefenseRank: number;
+  }
+> = {
+  KC: {
+    passOffenseRank: 3,
+    rushOffenseRank: 12,
+    passDefenseRank: 8,
+    rushDefenseRank: 15,
+  },
+  BUF: {
+    passOffenseRank: 2,
+    rushOffenseRank: 18,
+    passDefenseRank: 5,
+    rushDefenseRank: 10,
+  },
+  SF: {
+    passOffenseRank: 5,
+    rushOffenseRank: 4,
+    passDefenseRank: 3,
+    rushDefenseRank: 7,
+  },
+  DAL: {
+    passOffenseRank: 1,
+    rushOffenseRank: 15,
+    passDefenseRank: 12,
+    rushDefenseRank: 20,
+  },
+  PHI: {
+    passOffenseRank: 8,
+    rushOffenseRank: 2,
+    passDefenseRank: 6,
+    rushDefenseRank: 4,
+  },
+  MIA: {
+    passOffenseRank: 4,
+    rushOffenseRank: 22,
+    passDefenseRank: 18,
+    rushDefenseRank: 25,
+  },
+  BAL: {
+    passOffenseRank: 10,
+    rushOffenseRank: 1,
+    passDefenseRank: 14,
+    rushDefenseRank: 12,
+  },
+  DET: {
+    passOffenseRank: 6,
+    rushOffenseRank: 5,
+    passDefenseRank: 22,
+    rushDefenseRank: 28,
+  },
+  GB: {
+    passOffenseRank: 11,
+    rushOffenseRank: 8,
+    passDefenseRank: 9,
+    rushDefenseRank: 11,
+  },
+  LAR: {
+    passOffenseRank: 7,
+    rushOffenseRank: 19,
+    passDefenseRank: 15,
+    rushDefenseRank: 16,
+  },
+  CIN: {
+    passOffenseRank: 9,
+    rushOffenseRank: 20,
+    passDefenseRank: 19,
+    rushDefenseRank: 17,
+  },
+  LAC: {
+    passOffenseRank: 12,
+    rushOffenseRank: 13,
+    passDefenseRank: 10,
+    rushDefenseRank: 13,
+  },
+  TB: {
+    passOffenseRank: 13,
+    rushOffenseRank: 16,
+    passDefenseRank: 16,
+    rushDefenseRank: 18,
+  },
+  MIN: {
+    passOffenseRank: 14,
+    rushOffenseRank: 14,
+    passDefenseRank: 11,
+    rushDefenseRank: 14,
+  },
+  ATL: {
+    passOffenseRank: 15,
+    rushOffenseRank: 11,
+    passDefenseRank: 20,
+    rushDefenseRank: 21,
+  },
+  SEA: {
+    passOffenseRank: 16,
+    rushOffenseRank: 10,
+    passDefenseRank: 17,
+    rushDefenseRank: 19,
+  },
+  PIT: {
+    passOffenseRank: 17,
+    rushOffenseRank: 17,
+    passDefenseRank: 7,
+    rushDefenseRank: 8,
+  },
+  HOU: {
+    passOffenseRank: 18,
+    rushOffenseRank: 9,
+    passDefenseRank: 13,
+    rushDefenseRank: 9,
+  },
+  NO: {
+    passOffenseRank: 19,
+    rushOffenseRank: 21,
+    passDefenseRank: 21,
+    rushDefenseRank: 22,
+  },
+  IND: {
+    passOffenseRank: 20,
+    rushOffenseRank: 7,
+    passDefenseRank: 23,
+    rushDefenseRank: 23,
+  },
+  ARI: {
+    passOffenseRank: 21,
+    rushOffenseRank: 23,
+    passDefenseRank: 24,
+    rushDefenseRank: 24,
+  },
+  WAS: {
+    passOffenseRank: 22,
+    rushOffenseRank: 6,
+    passDefenseRank: 25,
+    rushDefenseRank: 26,
+  },
+  JAX: {
+    passOffenseRank: 23,
+    rushOffenseRank: 24,
+    passDefenseRank: 26,
+    rushDefenseRank: 27,
+  },
+  DEN: {
+    passOffenseRank: 24,
+    rushOffenseRank: 25,
+    passDefenseRank: 4,
+    rushDefenseRank: 6,
+  },
+  CLE: {
+    passOffenseRank: 25,
+    rushOffenseRank: 26,
+    passDefenseRank: 2,
+    rushDefenseRank: 3,
+  },
+  TEN: {
+    passOffenseRank: 26,
+    rushOffenseRank: 27,
+    passDefenseRank: 27,
+    rushDefenseRank: 29,
+  },
+  CHI: {
+    passOffenseRank: 27,
+    rushOffenseRank: 28,
+    passDefenseRank: 28,
+    rushDefenseRank: 30,
+  },
+  LV: {
+    passOffenseRank: 28,
+    rushOffenseRank: 29,
+    passDefenseRank: 29,
+    rushDefenseRank: 31,
+  },
+  NYJ: {
+    passOffenseRank: 29,
+    rushOffenseRank: 30,
+    passDefenseRank: 1,
+    rushDefenseRank: 2,
+  },
+  NYG: {
+    passOffenseRank: 30,
+    rushOffenseRank: 31,
+    passDefenseRank: 30,
+    rushDefenseRank: 32,
+  },
+  NE: {
+    passOffenseRank: 31,
+    rushOffenseRank: 32,
+    passDefenseRank: 31,
+    rushDefenseRank: 5,
+  },
+  CAR: {
+    passOffenseRank: 32,
+    rushOffenseRank: 3,
+    passDefenseRank: 32,
+    rushDefenseRank: 1,
+  },
 };
 
 const getTeamRankings = (abbreviation: string) => {
-  return TEAM_RANKINGS[abbreviation] || {
-    passOffenseRank: 16,
-    rushOffenseRank: 16,
-    passDefenseRank: 16,
-    rushDefenseRank: 16,
-  };
+  return (
+    TEAM_RANKINGS[abbreviation] || {
+      passOffenseRank: 16,
+      rushOffenseRank: 16,
+      passDefenseRank: 16,
+      rushDefenseRank: 16,
+    }
+  );
 };
 
 /**
  * Parse weather condition from ESPN data
  */
-const parseWeather = (espnWeather?: { displayValue: string; temperature: number; conditionId: string }): Weather => {
+const parseWeather = (espnWeather?: {
+  displayValue: string;
+  temperature: number;
+  conditionId: string;
+}): Weather => {
   if (!espnWeather) {
     return {
       temperature: 70,
-      condition: 'Clear',
+      condition: "Clear",
       windSpeed: 0,
       precipitation: 0,
     };
   }
 
-  const condition = espnWeather.displayValue || 'Clear';
+  const condition = espnWeather.displayValue || "Clear";
   const temp = espnWeather.temperature || 70;
 
   let windSpeed = 0;
   let precipitation = 0;
 
-  if (condition.toLowerCase().includes('wind')) {
+  if (condition.toLowerCase().includes("wind")) {
     windSpeed = 15;
   }
-  if (condition.toLowerCase().includes('rain')) {
+  if (condition.toLowerCase().includes("rain")) {
     precipitation = 50;
     windSpeed = 10;
   }
-  if (condition.toLowerCase().includes('snow')) {
+  if (condition.toLowerCase().includes("snow")) {
     precipitation = 60;
     windSpeed = 12;
   }
@@ -153,7 +328,7 @@ const parseOdds = (odds?: Array<{ details?: string; overUnder?: number }>) => {
   }
 
   const firstOdd = odds[0];
-  let overUnder = firstOdd.overUnder || null;
+  const overUnder = firstOdd.overUnder || null;
   let spread = 0;
 
   if (firstOdd.details) {
@@ -169,7 +344,10 @@ const parseOdds = (odds?: Array<{ details?: string; overUnder?: number }>) => {
 /**
  * Fetch games for a specific week and season
  */
-export const fetchWeekGames = async (season: number, week: number): Promise<Game[]> => {
+export const fetchWeekGames = async (
+  season: number,
+  week: number
+): Promise<Game[]> => {
   try {
     const url = `${ESPN_API_BASE}/scoreboard`;
     const params = {
@@ -187,11 +365,15 @@ export const fetchWeekGames = async (season: number, week: number): Promise<Game
 
     const games: Game[] = response.data.events.map((event) => {
       const competition = event.competitions[0];
-      const homeCompetitor = competition.competitors.find((c) => c.homeAway === 'home');
-      const awayCompetitor = competition.competitors.find((c) => c.homeAway === 'away');
+      const homeCompetitor = competition.competitors.find(
+        (c) => c.homeAway === "home"
+      );
+      const awayCompetitor = competition.competitors.find(
+        (c) => c.homeAway === "away"
+      );
 
       if (!homeCompetitor || !awayCompetitor) {
-        throw new Error('Missing competitor data');
+        throw new Error("Missing competitor data");
       }
 
       const homeTeamAbbr = homeCompetitor.team.abbreviation;
@@ -217,8 +399,12 @@ export const fetchWeekGames = async (season: number, week: number): Promise<Game
       const { overUnder, spread } = parseOdds(competition.odds);
       const isCompleted = event.status.type.completed;
 
-      const homeScore = homeCompetitor.score ? parseInt(homeCompetitor.score, 10) : undefined;
-      const awayScore = awayCompetitor.score ? parseInt(awayCompetitor.score, 10) : undefined;
+      const homeScore = homeCompetitor.score
+        ? parseInt(homeCompetitor.score, 10)
+        : undefined;
+      const awayScore = awayCompetitor.score
+        ? parseInt(awayCompetitor.score, 10)
+        : undefined;
 
       return {
         id: event.id,
@@ -238,7 +424,7 @@ export const fetchWeekGames = async (season: number, week: number): Promise<Game
 
     return games;
   } catch (error) {
-    console.error('Error fetching NFL games:', error);
+    console.error("Error fetching NFL games:", error);
     throw error;
   }
 };
@@ -270,7 +456,9 @@ export const getCurrentWeek = (): number => {
 /**
  * Legacy function for backward compatibility
  */
-export const fetchCurrentWeekGames = async (season: number = 2025): Promise<Game[]> => {
+export const fetchCurrentWeekGames = async (
+  season: number = 2025
+): Promise<Game[]> => {
   const currentWeek = getCurrentWeek();
   return fetchWeekGames(season, currentWeek);
 };
@@ -279,14 +467,17 @@ export const fetchCurrentWeekGames = async (season: number = 2025): Promise<Game
  * Fetch team statistics
  * TODO: Integrate with a real stats API for live rankings
  */
-export const fetchTeamStats = async (teamId: string, season: number = 2025): Promise<Team> => {
+export const fetchTeamStats = async (
+  teamId: string,
+  season: number = 2025
+): Promise<Team> => {
   // For now, return mock data
   // In production, this should fetch from a stats API
   const mockTeam: Team = {
     id: teamId,
-    name: 'Team Name',
-    abbreviation: 'TM',
-    ...getTeamRankings('KC'),
+    name: "Team Name",
+    abbreviation: "TM",
+    ...getTeamRankings("KC"),
   };
 
   return mockTeam;
@@ -306,10 +497,10 @@ interface ESPNPlay {
     };
   };
   participants?: Array<{
+    type: string;
     athlete: {
-      id: string;
-      displayName: string;
-      shortName: string;
+      type: string;
+      $ref?: string;
     };
   }>;
 }
@@ -351,15 +542,18 @@ export const fetchHeadToHeadTDs = async (
     const currentYear = new Date().getFullYear();
     const startYear = Math.min(season, currentYear);
 
-    for (let year = startYear; year >= startYear - 5 && headToHeadGames.length < 3; year--) {
+    for (
+      let year = startYear;
+      year >= startYear - 5 && headToHeadGames.length < 5;
+      year--
+    ) {
       try {
         const scheduleUrl = `${ESPN_API_BASE}/teams/${team1Id}/schedule`;
         const scheduleParams = { season: year };
 
-        const scheduleResponse = await axios.get<{ events: ESPNScheduleEvent[] }>(
-          scheduleUrl,
-          { params: scheduleParams }
-        );
+        const scheduleResponse = await axios.get<{
+          events: ESPNScheduleEvent[];
+        }>(scheduleUrl, { params: scheduleParams });
 
         if (!scheduleResponse.data.events) {
           continue;
@@ -370,7 +564,9 @@ export const fetchHeadToHeadTDs = async (
           .filter((event) => {
             const competition = event.competitions[0];
             const opponentIds = competition.competitors.map((c) => c.team.id);
-            return opponentIds.includes(team2Id) && competition.status.type.completed;
+            return (
+              opponentIds.includes(team2Id) && competition.status.type.completed
+            );
           })
           .map((event) => event.id);
 
@@ -381,7 +577,7 @@ export const fetchHeadToHeadTDs = async (
     }
 
     // Limit to last 3 games
-    const gamesToAnalyze = headToHeadGames.slice(0, 3);
+    const gamesToAnalyze = headToHeadGames.slice(0, 5);
 
     if (gamesToAnalyze.length === 0) {
       return { topScorers: [] };
@@ -395,40 +591,53 @@ export const fetchHeadToHeadTDs = async (
         const playsUrl = `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/${gameId}/competitions/${gameId}/plays`;
         const playsParams = { limit: 300 };
 
-        const playsResponse = await axios.get<{ items: ESPNPlay[] }>(
-          playsUrl,
-          { params: playsParams }
-        );
+        const playsResponse = await axios.get<{ items: ESPNPlay[] }>(playsUrl, {
+          params: playsParams,
+        });
 
         if (!playsResponse.data.items) {
           continue;
         }
 
-        // Filter for scoring plays that are rushing or receiving TDs
+        // Filter for scoring plays that are Rushing or receiving TDs
         const touchdowns = playsResponse.data.items.filter((play) => {
           if (!play.scoringPlay) return false;
 
-          const playType = play.type.text.toLowerCase();
-          const isTD = playType.includes('touchdown') &&
-                       (playType.includes('rush') || playType.includes('pass') || playType.includes('receiving'));
+          const playText = play.type.text.toLowerCase();
 
-          return isTD;
+          return playText.includes("passing") || playText.includes("rushing");
         });
 
         // Extract player names from touchdown plays
-        touchdowns.forEach((td) => {
-          if (td.participants && td.participants.length > 0) {
-            // For TDs, typically the last participant is the scorer
-            const scorer = td.participants[td.participants.length - 1];
-            const playerName = scorer.athlete.shortName;
+        for (const touchdown of touchdowns) {
+          const touchdownScorer = touchdown.participants?.find(
+            (participant) => participant.type === "scorer"
+          );
 
-            tdScorers[playerName] = (tdScorers[playerName] || 0) + 1;
+          if (touchdownScorer?.athlete?.$ref) {
+            try {
+              const athleteResponse = await axios.get(
+                touchdownScorer.athlete.$ref
+              );
+              console.log("touchdown scoerer name", athleteResponse);
+              const playerName =
+                athleteResponse.data.displayName ||
+                athleteResponse.data.fullName;
+
+              if (playerName) {
+                tdScorers[playerName] = (tdScorers[playerName] || 0) + 1;
+              }
+            } catch (athleteError) {
+              console.error("Error fetching athlete data:", athleteError);
+            }
           }
-        });
+        }
       } catch (playError) {
         console.error(`Error fetching plays for game ${gameId}:`, playError);
       }
     }
+
+    console.log(tdScorers);
 
     // Step 3: Convert to array and sort by TD count (desc), then by name (asc)
     const topScorers: TDScorer[] = Object.entries(tdScorers)
@@ -440,7 +649,7 @@ export const fetchHeadToHeadTDs = async (
 
     return { topScorers };
   } catch (error) {
-    console.error('Error fetching head-to-head TD data:', error);
+    console.error("Error fetching head-to-head TD data:", error);
     return {
       topScorers: [],
     };

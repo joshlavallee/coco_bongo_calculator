@@ -1,22 +1,24 @@
-import { useState, useEffect } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { darkTheme, lightTheme } from './styles/theme';
-import { GlobalStyles } from './styles/GlobalStyles';
-import { Navigation, ThemeToggle } from './components';
-import { SeasonPage } from './pages/SeasonPage';
-import { PerformancePage } from './pages/PerformancePage';
+import { useState, useEffect } from "react";
+import styled, { ThemeProvider } from "styled-components";
+import { darkTheme, lightTheme } from "./styles/theme";
+import { GlobalStyles } from "./styles/GlobalStyles";
+import { Navigation, ThemeToggle } from "./components";
+import { SeasonPage } from "./pages/SeasonPage";
+import { PerformancePage } from "./pages/PerformancePage";
 
 const CURRENT_SEASON = 2025;
 
 const App = () => {
-  const [activePage, setActivePage] = useState<'season' | 'performance'>('season');
+  const [activePage, setActivePage] = useState<"season" | "performance">(
+    "season"
+  );
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    return saved ? saved === 'dark' : true;
+    const saved = localStorage.getItem("theme");
+    return saved ? saved === "dark" : true;
   });
 
   useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
   const toggleTheme = () => {
@@ -25,13 +27,13 @@ const App = () => {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <GlobalStyles />
+      <GlobalStyles theme={isDarkMode ? darkTheme : lightTheme} />
       <AppContainer>
         <Header>
           <HeaderContent>
             <Logo>
               <PeachIcon>🍑</PeachIcon>
-              <LogoText>Big Booty Betting Bitches</LogoText>
+              <LogoText>Coco Bongo Calulator</LogoText>
             </Logo>
             <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
           </HeaderContent>
@@ -40,8 +42,10 @@ const App = () => {
         <MainContent>
           <Navigation activePage={activePage} onPageChange={setActivePage} />
 
-          {activePage === 'season' && <SeasonPage season={CURRENT_SEASON} />}
-          {activePage === 'performance' && <PerformancePage season={CURRENT_SEASON} />}
+          {activePage === "season" && <SeasonPage season={CURRENT_SEASON} />}
+          {activePage === "performance" && (
+            <PerformancePage season={CURRENT_SEASON} />
+          )}
         </MainContent>
 
         <Footer>
