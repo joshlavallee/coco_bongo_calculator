@@ -619,7 +619,7 @@ export const fetchHeadToHeadTDs = async (
               const athleteResponse = await axios.get(
                 touchdownScorer.athlete.$ref
               );
-              console.log("touchdown scoerer name", athleteResponse);
+
               const playerName =
                 athleteResponse.data.displayName ||
                 athleteResponse.data.fullName;
@@ -636,8 +636,6 @@ export const fetchHeadToHeadTDs = async (
         console.error(`Error fetching plays for game ${gameId}:`, playError);
       }
     }
-
-    console.log(tdScorers);
 
     // Step 3: Convert to array and sort by TD count (desc), then by name (asc)
     const topScorers: TDScorer[] = Object.entries(tdScorers)

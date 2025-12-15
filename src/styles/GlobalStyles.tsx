@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import { Theme } from './theme';
+import { createGlobalStyle } from "styled-components";
+import { Theme } from "./theme";
 
 export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -28,6 +28,8 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    min-height: 100vh;
+    contain: paint;
     transition: background ${({ theme }) => theme.transitions.medium},
                 color ${({ theme }) => theme.transitions.medium};
   }
@@ -66,6 +68,11 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
     font-size: inherit;
   }
 
+  html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -76,11 +83,15 @@ export const GlobalStyles = createGlobalStyle<{ theme: Theme }>`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.border.medium};
+    background: #7B61C9;
     border-radius: ${({ theme }) => theme.borderRadius.sm};
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: ${({ theme }) => theme.colors.border.accent};
+    background: #D44FA1;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: ${({ theme }) => theme.colors.background.card};
   }
 `;

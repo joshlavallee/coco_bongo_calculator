@@ -1,5 +1,5 @@
-import { Parlay, Bet } from '../types';
-import betsHistoryData from '../data/betsHistory.json';
+import { Parlay, Bet } from "../types";
+import betsHistoryData from "../data/betsHistory.json";
 
 /**
  * Bet Tracking Service
@@ -39,9 +39,9 @@ export const calculateSeasonStats = (season: number) => {
   const parlays = getParlaysBySeason(season);
 
   const totalParlays = parlays.length;
-  const wins = parlays.filter((p) => p.result === 'win').length;
-  const losses = parlays.filter((p) => p.result === 'loss').length;
-  const pending = parlays.filter((p) => p.result === 'pending').length;
+  const wins = parlays.filter((p) => p.result === "win").length;
+  const losses = parlays.filter((p) => p.result === "loss").length;
+  const pending = parlays.filter((p) => p.result === "pending").length;
 
   const totalWagered = parlays.reduce((sum, p) => sum + p.totalAmount, 0);
   const totalPayout = parlays.reduce((sum, p) => sum + (p.payout || 0), 0);
@@ -58,7 +58,8 @@ export const calculateSeasonStats = (season: number) => {
     totalWagered,
     totalPayout,
     netProfit,
-    roi: totalWagered > 0 ? ((netProfit / totalWagered) * 100).toFixed(2) : '0.00',
+    roi:
+      totalWagered > 0 ? ((netProfit / totalWagered) * 100).toFixed(2) : "0.00",
   };
 };
 
@@ -75,7 +76,7 @@ export const analyzePatterns = (season: number) => {
 
   allBets.forEach((bet) => {
     // Extract position from player name (this is mock logic, real implementation needs actual position data)
-    const position = 'Unknown'; // TODO: Get actual position from player data
+    const position = "Unknown"; // TODO: Get actual position from player data
 
     if (!positionStats.has(position)) {
       positionStats.set(position, { total: 0, wins: 0 });
@@ -88,9 +89,9 @@ export const analyzePatterns = (season: number) => {
 
   // Calculate success rate by odds range
   const oddsRanges = [
-    { min: 0, max: 500, label: 'Heavy Favorites (< +500)' },
-    { min: 500, max: 1000, label: 'Moderate (+500 to +1000)' },
-    { min: 1000, max: Infinity, label: 'Longshots (+1000+)' },
+    { min: 0, max: 500, label: "Heavy Favorites (< +500)" },
+    { min: 500, max: 1000, label: "Moderate (+500 to +1000)" },
+    { min: 1000, max: Infinity, label: "Longshots (+1000+)" },
   ];
 
   const oddsStats = oddsRanges.map((range) => {
@@ -111,13 +112,15 @@ export const analyzePatterns = (season: number) => {
   });
 
   return {
-    positionStats: Array.from(positionStats.entries()).map(([position, stats]) => ({
-      position,
-      total: stats.total,
-      wins: stats.wins,
-      winRate:
-        stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0,
-    })),
+    positionStats: Array.from(positionStats.entries()).map(
+      ([position, stats]) => ({
+        position,
+        total: stats.total,
+        wins: stats.wins,
+        winRate:
+          stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0,
+      })
+    ),
     oddsStats,
   };
 };
@@ -128,6 +131,5 @@ export const analyzePatterns = (season: number) => {
  */
 export const saveParlayToHistory = (parlay: Parlay): void => {
   // TODO: Implement database save
-  console.log('Saving parlay to history:', parlay);
   // For now, you'll need to manually add to betsHistory.json
 };

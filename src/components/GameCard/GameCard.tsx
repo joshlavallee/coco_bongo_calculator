@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Wind, TrendingUp, Home, Info, X } from "lucide-react";
+import { Wind, TrendingUp, Warehouse, Info, X } from "lucide-react";
 import { GameCardProps } from "./types";
 import { useGameCardData } from "./hooks/index";
 import {
@@ -144,7 +144,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
             <>
               <StatValue>
                 <WeatherIcon>
-                  <Home size={20} />
+                  <Warehouse size={20} />
                 </WeatherIcon>
                 <span>{DOME_TEXT}</span>
               </StatValue>

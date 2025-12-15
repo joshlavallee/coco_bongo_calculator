@@ -2,15 +2,13 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   ${({ theme }) => css`
-    background: ${theme.colors.background.card};
-    backdrop-filter: blur(${theme.blur.lg});
-    -webkit-backdrop-filter: blur(${theme.blur.lg});
+    background: ${theme.colors.background.glass};
     border: 1px solid ${theme.colors.border.light};
     border-radius: ${theme.borderRadius.xl};
-    box-shadow: ${theme.shadows.glass};
     padding: ${theme.spacing.xl};
     margin-bottom: ${theme.spacing.xl};
-    transition: all ${theme.transitions.fast};
+    transition: background ${theme.transitions.fast},
+      border-color ${theme.transitions.fast};
 
     &:hover {
       border-color: ${theme.colors.border.medium};
@@ -77,9 +75,11 @@ export const WeekPill = styled.button<{
     align-items: center;
     justify-content: center;
     min-height: 65px;
-    width: calc((100% - (17 * ${theme.spacing.xs})) / 18);
-    min-width: 60px;
+    flex: 1;
+    min-width: 55px;
     transform: ${selected ? "scale(1.08)" : "scale(1)"};
+    margin-left: ${selected ? theme.spacing.sm : "0"};
+    margin-right: ${selected ? theme.spacing.sm : "0"};
 
     &:hover {
       transform: scale(1.08);

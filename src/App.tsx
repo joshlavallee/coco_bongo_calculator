@@ -33,7 +33,7 @@ const App = () => {
           <HeaderContent>
             <Logo>
               <PeachIcon>🍑</PeachIcon>
-              <LogoText>Coco Bongo Calulator</LogoText>
+              <LogoText>Coco Bongo Calculator</LogoText>
             </Logo>
             <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
           </HeaderContent>

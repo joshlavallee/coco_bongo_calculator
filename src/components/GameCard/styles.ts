@@ -183,11 +183,17 @@ export const StatValue = styled.div<{ large?: boolean }>`
     align-items: center;
     justify-content: center;
     gap: ${theme.spacing.xs};
+    line-height: 1;
   `}
 `;
 
 export const WeatherIcon = styled.span`
-  color: ${({ theme }) => theme.colors.text.secondary};
+  ${({ theme }) => css`
+    color: ${theme.colors.text.secondary};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `}
 `;
 
 export const StatDetail = styled.div`
