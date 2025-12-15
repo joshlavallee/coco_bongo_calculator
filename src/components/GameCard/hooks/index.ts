@@ -8,5 +8,4 @@ export { useCelsiusTemperature } from './useCelsiusTemperature';
 export { useTeamName } from './useTeamName';
 export { useTeamLogoUrl } from './useTeamLogoUrl';
 export { useWeeklyTDs } from './useWeeklyTDs';
-export { useWeatherIcon } from './useWeatherIcon';
 export { useGameCardData } from './useGameCardData';

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchWeekGames, fetchHeadToHeadTDs } from "../../../services/nflApi";
+import { sortGames } from "../utils";
 
 export const useWeekGames = (season: number, selectedWeek: number) => {
   return useQuery({
@@ -21,7 +22,7 @@ export const useWeekGames = (season: number, selectedWeek: number) => {
         })
       );
 
-      return gamesWithTDs;
+      return sortGames(gamesWithTDs);
     },
     refetchInterval: 5 * 60 * 1000,
   });

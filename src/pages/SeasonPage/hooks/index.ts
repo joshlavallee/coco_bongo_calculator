@@ -1,2 +1,2 @@
 export { useWeekGames } from "./useWeekGames";
-export { useSortedGames } from "./useSortedGames";
+export { useSeasonPage } from "./useSeasonPage";

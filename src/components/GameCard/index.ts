@@ -1,5 +1,5 @@
-export { GameCard } from './GameCard';
-export type { GameCardProps } from './types';
+export { GameCard } from "./GameCard";
+export type { GameCardProps } from "./types";
 export {
   useRecommendedPlayers,
   useTopPick,
@@ -12,5 +12,4 @@ export {
   useTeamName,
   useTeamLogoUrl,
   useWeeklyTDs,
-  useWeatherIcon,
-} from './hooks/index';
+} from "./hooks/index";

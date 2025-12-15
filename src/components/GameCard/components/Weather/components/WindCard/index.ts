@@ -1,0 +1,1 @@
+export { WindCard } from "./WindCard";

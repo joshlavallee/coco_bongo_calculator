@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { GameCard, WeekSelector } from "../../components";
-import { getCurrentWeek } from "../../services/nflApi";
-import { useWeekGames, useSortedGames } from "./hooks";
+import { useSeasonPage } from "./hooks";
 import {
   Section,
   SectionHeader,
@@ -25,12 +23,14 @@ interface SeasonPageProps {
 }
 
 export const SeasonPage: React.FC<SeasonPageProps> = ({ season }) => {
-  const currentWeek = getCurrentWeek();
-  const [selectedWeek, setSelectedWeek] = useState(currentWeek);
-
-  const { data: games, isLoading, error } = useWeekGames(season, selectedWeek);
-
-  const sortedGames = useSortedGames(games);
+  const {
+    currentWeek,
+    selectedWeek,
+    setSelectedWeek,
+    games,
+    isLoading,
+    error,
+  } = useSeasonPage(season);
 
   return (
     <>
@@ -68,15 +68,15 @@ export const SeasonPage: React.FC<SeasonPageProps> = ({ season }) => {
           </ErrorContainer>
         )}
 
-        {sortedGames && sortedGames.length > 0 && (
+        {games && games.length > 0 && (
           <GamesGrid>
-            {sortedGames.map((game) => (
+            {games.map((game) => (
               <GameCard key={game.id} game={game} />
             ))}
           </GamesGrid>
         )}
 
-        {sortedGames && sortedGames.length === 0 && (
+        {games && games.length === 0 && (
           <EmptyState>
             <EmptyText>No games scheduled for Week {selectedWeek}</EmptyText>
             <EmptySubtext>
