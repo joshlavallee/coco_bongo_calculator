@@ -1,4 +1,5 @@
 import { GameCard, WeekSelector } from "../../components";
+import { GameProvider } from "../../components/GameCard/context";
 import { useSeasonPage } from "./hooks";
 import {
   Section,
@@ -71,7 +72,9 @@ export const SeasonPage: React.FC<SeasonPageProps> = ({ season }) => {
         {games && games.length > 0 && (
           <GamesGrid>
             {games.map((game) => (
-              <GameCard key={game.id} game={game} />
+              <GameProvider key={game.id} game={game}>
+                <GameCard />
+              </GameProvider>
             ))}
           </GamesGrid>
         )}

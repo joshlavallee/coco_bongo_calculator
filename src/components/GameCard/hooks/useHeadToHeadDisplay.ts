@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
-import { Game } from '../../../types';
+import { useMemo } from "react";
+import { useGame } from "../context";
 
 /**
  * Hook to process head-to-head TD scorers
  * Returns display scorers and optional fifth row
  */
-export const useHeadToHeadDisplay = (game: Game) => {
+export const useHeadToHeadDisplay = () => {
+  const { game } = useGame();
   return useMemo(() => {
     if (!game.headToHeadTDs || game.headToHeadTDs.topScorers.length === 0) {
       return { displayScorers: [], fifthRow: null };
@@ -19,7 +20,7 @@ export const useHeadToHeadDisplay = (game: Game) => {
       const fifthScorer = scorers[4];
       const remainingScorers = scorers.slice(5);
       const othersTiedAtSameCount = remainingScorers.filter(
-        s => s.count === fifthScorer.count
+        (s) => s.count === fifthScorer.count
       );
 
       if (othersTiedAtSameCount.length > 0) {

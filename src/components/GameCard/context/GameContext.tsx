@@ -26,6 +26,7 @@ export const useGame = () => {
   const { game } = context;
 
   return {
+    game,
     weather: game.weather,
     isCompleted: game.isCompleted,
     homeScore: game.homeScore,
