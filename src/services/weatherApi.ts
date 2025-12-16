@@ -1,45 +1,88 @@
-import axios from 'axios';
-import { Weather } from '../types';
+import axios from "axios";
 
-/**
- * Weather API Service
- *
- * TODO: Integrate with real weather API
- * Options:
- * 1. OpenWeatherMap API: https://openweathermap.org/api
- * 2. WeatherAPI: https://www.weatherapi.com/
- * 3. Weather.gov (free for US locations)
- *
- * You'll need to map stadium locations to coordinates or zip codes
- * and fetch weather forecasts for game times
- */
+// 1. Define Types for API Safety
+interface GeocodingResult {
+  latitude: number;
+  longitude: number;
+  name: string;
+  admin1?: string;
+}
 
-export const fetchWeatherForGame = async (
-  location: string,
-  gameTime: string
-): Promise<Weather> => {
-  // TODO: Replace with real API call
-  // Example:
-  // const response = await axios.get(
-  //   `https://api.openweathermap.org/data/2.5/forecast`,
-  //   {
-  //     params: {
-  //       q: location,
-  //       appid: process.env.VITE_WEATHER_API_KEY,
-  //       units: 'imperial'
-  //     }
-  //   }
-  // );
-
-  // Mock data - in production, this would come from a real weather API
-  await new Promise(resolve => setTimeout(resolve, 200));
-
-  return {
-    temperature: Math.floor(Math.random() * 50) + 20,
-    condition: ['Clear', 'Cloudy', 'Rain', 'Snow', 'Partly Cloudy'][
-      Math.floor(Math.random() * 5)
-    ],
-    windSpeed: Math.floor(Math.random() * 20),
-    precipitation: Math.floor(Math.random() * 100),
+interface WeatherResponse {
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+    precipitation: number[];
+    wind_speed_10m: number[];
   };
+  hourly_units: {
+    temperature_2m: string;
+    precipitation: string;
+    wind_speed_10m: string;
+  };
+}
+
+export interface GameWeather {
+  location: string;
+  time: string;
+  temperatureText: string;
+  temperatureValue: number;
+  windText: string;
+  windValue: number;
+  precipitationText: string;
+  precipitationValue: number;
+  precipitationType: string | null;
+}
+
+export const getKickoffWeather = async (
+  city: string,
+  timestamp: string
+): Promise<GameWeather | string> => {
+  try {
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&format=json`;
+    const geoRes = await axios.get<{ results: GeocodingResult[] }>(geoUrl);
+
+    if (!geoRes.data.results) return "City not found.";
+    const { latitude, longitude, name, admin1 } = geoRes.data.results[0];
+
+    const dateOnly = timestamp.split("T")[0];
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast`;
+
+    const weatherRes = await axios.get<WeatherResponse>(weatherUrl, {
+      params: {
+        latitude,
+        longitude,
+        start_date: dateOnly,
+        end_date: dateOnly,
+        hourly: "temperature_2m,precipitation,wind_speed_10m",
+        timezone: "auto",
+      },
+    });
+
+    const kickoffHour = timestamp.substring(0, 13); // "2025-12-18T17"
+    const { hourly, hourly_units } = weatherRes.data;
+    const index = hourly.time.findIndex((t) => t.startsWith(kickoffHour));
+
+    if (index === -1) return "No data found for that hour.";
+
+    return {
+      location: `${name}, ${admin1}`,
+      time: hourly.time[index],
+      temperatureText: `${hourly.temperature_2m[index]}${hourly_units.temperature_2m}`,
+      temperatureValue: hourly.temperature_2m[index],
+      windText: `${hourly.wind_speed_10m[index]} ${hourly_units.wind_speed_10m}`,
+      windValue: hourly.wind_speed_10m[index],
+      precipitationText: `${hourly.precipitation[index]} ${hourly_units.precipitation}`,
+      precipitationValue: hourly.precipitation[index],
+      precipitationType:
+        hourly.precipitation[index] > 0
+          ? hourly.temperature_2m[index] < 0
+            ? "Snow"
+            : "Rain"
+          : null,
+    };
+  } catch (error) {
+    console.error("Error fetching weather:", error);
+    return "Failed to retrieve weather data.";
+  }
 };

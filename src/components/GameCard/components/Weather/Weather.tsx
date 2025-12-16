@@ -1,24 +1,17 @@
 import { WindCard, TemperatureCard } from "./components";
+import { useWeatherData } from "./hooks/useWeatherData";
 
-interface WeatherProps {
-  isDomeGame: boolean;
-  isWeatherAvailable: boolean;
-}
+export const Weather: React.FC = () => {
+  const { data: weatherData, isLoading, error } = useWeatherData();
 
-export const Weather: React.FC<WeatherProps> = ({
-  isDomeGame,
-  isWeatherAvailable,
-}) => {
   return (
     <>
       <TemperatureCard
-        isDomeGame={isDomeGame}
-        isWeatherAvailable={isWeatherAvailable}
+        weather={weatherData}
+        isLoading={isLoading}
+        error={error}
       />
-      <WindCard
-        isDomeGame={isDomeGame}
-        isWeatherAvailable={isWeatherAvailable}
-      />
+      <WindCard weather={weatherData} isLoading={isLoading} error={error} />
     </>
   );
 };

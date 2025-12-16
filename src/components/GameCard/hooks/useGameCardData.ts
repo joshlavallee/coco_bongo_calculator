@@ -1,9 +1,7 @@
-import { Game } from '../../../types';
-import { useRecommendedPlayers } from './useRecommendedPlayers';
-import { useTopPick } from './useTopPick';
-import { useIsDomeGame } from './useIsDomeGame';
-import { useIsWeatherAvailable } from './useIsWeatherAvailable';
-import { useHeadToHeadDisplay } from './useHeadToHeadDisplay';
+import { Game } from "../../../types";
+import { useRecommendedPlayers } from "./useRecommendedPlayers";
+import { useTopPick } from "./useTopPick";
+import { useHeadToHeadDisplay } from "./useHeadToHeadDisplay";
 
 /**
  * Combined hook that returns all game card data
@@ -12,15 +10,11 @@ import { useHeadToHeadDisplay } from './useHeadToHeadDisplay';
 export const useGameCardData = (game: Game) => {
   const recommendedPlayers = useRecommendedPlayers(game);
   const topPick = useTopPick(game);
-  const isDomeGame = useIsDomeGame(game);
-  const isWeatherAvailable = useIsWeatherAvailable(game);
   const headToHeadDisplay = useHeadToHeadDisplay(game);
 
   return {
     recommendedPlayers,
     topPick,
-    isDomeGame,
-    isWeatherAvailable,
     headToHeadDisplay,
   };
 };

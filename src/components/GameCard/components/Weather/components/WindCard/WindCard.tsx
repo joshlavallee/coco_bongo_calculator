@@ -1,65 +1,37 @@
 import { Wind } from "lucide-react";
-import {
-  StatCard,
-  StatLabel,
-  StatValue,
-  WeatherIcon,
-  StatDetail,
-  WindWarning,
-} from "../../../../styles";
-import {
-  WIND_TITLE,
-  MPH_TEXT,
-  NOT_AVAILABLE_TEXT,
-  HIGH_WIND_TEXT,
-} from "./constants";
-import { useGame } from "../../../../context";
+import { StatCard, StatLabel, StatValue, Warning } from "../../../../styles";
+import { WIND_TITLE, HIGH_WIND_TEXT, NOT_AVAILABLE_TEXT } from "./constants";
+import { LoadingSpinner } from "./styles";
+import { GameWeather } from "../../../../../../services/weatherApi";
 
 interface WindCardProps {
-  isDomeGame: boolean;
-  isWeatherAvailable: boolean;
+  weather?: GameWeather | null;
+  isLoading: boolean;
+  error: Error | null;
 }
 
 export const WindCard: React.FC<WindCardProps> = ({
-  isDomeGame,
-  isWeatherAvailable,
+  weather,
+  isLoading,
+  error,
 }) => {
-  const { weather } = useGame();
-  const { windSpeed = 0 } = weather;
+  const { windText, windValue } = weather || {};
+
+  // TODO: Add the UI for the error state here
+  if (error) return null;
+
   return (
     <StatCard>
       <StatLabel>{WIND_TITLE}</StatLabel>
-      {isDomeGame ? (
-        <>
-          <StatValue>
-            <WeatherIcon>
-              <Wind size={20} />
-            </WeatherIcon>
-            <span>0</span>
-          </StatValue>
-          <StatDetail>{MPH_TEXT}</StatDetail>
-        </>
-      ) : !isWeatherAvailable ? (
-        <>
-          <StatValue>
-            <WeatherIcon>
-              <Wind size={20} />
-            </WeatherIcon>
-            <span>-</span>
-          </StatValue>
-          <StatDetail>{NOT_AVAILABLE_TEXT}</StatDetail>
-        </>
-      ) : (
-        <>
-          <StatValue large={windSpeed > 15}>{windSpeed}</StatValue>
-          <StatDetail>{MPH_TEXT}</StatDetail>
-          {windSpeed > 15 && (
-            <WindWarning>
-              <Wind size={14} />
-              <span>{HIGH_WIND_TEXT}</span>
-            </WindWarning>
-          )}
-        </>
+      <StatValue>
+        {isLoading ? <LoadingSpinner /> : windText || NOT_AVAILABLE_TEXT}
+      </StatValue>
+      {/* TODO: The magic numbers like this 15 (km/h) should be updated to be a slider eventually so the user can update it and get their own warnings for what they think is high wind */}
+      {windValue && windValue > 15 && (
+        <Warning>
+          <Wind size={14} />
+          <span>{HIGH_WIND_TEXT}</span>
+        </Warning>
       )}
     </StatCard>
   );

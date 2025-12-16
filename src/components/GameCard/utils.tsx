@@ -1,23 +1,19 @@
-import { Cloud, CloudRain, CloudSnow, Sun } from 'lucide-react';
+import { CloudSun, CloudRain, CloudSnow } from "lucide-react";
 
 export const formatGameTime = (isoTime: string) => {
   const date = new Date(isoTime);
-  return date.toLocaleString('en-US', {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    timeZoneName: 'short',
+  return date.toLocaleString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
   });
 };
 
-export const fahrenheitToCelsius = (fahrenheit: number) => {
-  return Math.round((fahrenheit - 32) * 5 / 9);
-};
-
 export const getTeamName = (fullName: string) => {
-  const parts = fullName.split(' ');
+  const parts = fullName.split(" ");
   return parts[parts.length - 1];
 };
 
@@ -37,12 +33,17 @@ export const getWeeklyTDs = (currentWeek: number) => {
   return weeklyTDs;
 };
 
-export const getWeatherIcon = (isWeatherAvailable: boolean, condition: string) => {
-  if (!isWeatherAvailable) return <Cloud size={20} />;
-  const lowerCondition = condition.toLowerCase();
-  if (lowerCondition.includes('snow')) return <CloudSnow size={20} />;
-  if (lowerCondition.includes('rain')) return <CloudRain size={20} />;
-  if (lowerCondition.includes('cloud') || lowerCondition.includes('overcast')) return <Cloud size={20} />;
-  if (lowerCondition.includes('clear') || lowerCondition.includes('sunny')) return <Sun size={20} />;
-  return <Cloud size={20} />;
+export const getWeatherIcon = (
+  temperatureValue: number,
+  precipitationValue = 0
+) => {
+  if (precipitationValue > 0) {
+    if (temperatureValue < 0) {
+      return <CloudSnow size={20} />;
+    } else {
+      return <CloudRain size={20} />;
+    }
+  }
+
+  return <CloudSun size={20} />;
 };

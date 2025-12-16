@@ -71,13 +71,8 @@ import {
 
 export const GameCard: React.FC<GameCardProps> = ({ game }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const {
-    recommendedPlayers,
-    topPick,
-    isDomeGame,
-    isWeatherAvailable,
-    headToHeadDisplay,
-  } = useGameCardData(game);
+  const { recommendedPlayers, topPick, headToHeadDisplay } =
+    useGameCardData(game);
 
   return (
     <GameProvider game={game}>
@@ -117,10 +112,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
         </MatchupSection>
 
         <StatsSection>
-          <Weather
-            isDomeGame={isDomeGame}
-            isWeatherAvailable={isWeatherAvailable}
-          />
+          <Weather />
           <OverUnder />
         </StatsSection>
 

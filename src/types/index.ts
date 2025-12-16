@@ -36,8 +36,8 @@ export interface Game {
   overUnder: number | null;
   spread: number;
   isCompleted: boolean;
-  homeScore?: number;
-  awayScore?: number;
+  homeScore: number;
+  awayScore: number;
   headToHeadTDs?: HeadToHeadTDs;
 }
 
@@ -58,7 +58,7 @@ export interface Pick {
   ticket_id: string;
   player_name: string;
   team: string;
-  position: 'QB' | 'RB' | 'WR' | 'TE';
+  position: "QB" | "RB" | "WR" | "TE";
   opponent: string;
   opponent_defense_rank: number;
   odds: number;
@@ -73,7 +73,7 @@ export interface Ticket {
   week: number;
   season: number;
   created_at: string;
-  result: 'pending' | 'win' | 'loss';
+  result: "pending" | "win" | "loss";
   total_picks: number;
   correct_picks: number;
   picks?: Pick[];

@@ -201,7 +201,7 @@ export const StatDetail = styled.div`
   color: ${({ theme }) => theme.colors.text.secondary};
 `;
 
-export const WindWarning = styled.div`
+export const Warning = styled.div`
   ${({ theme }) => css`
     display: flex;
     align-items: center;

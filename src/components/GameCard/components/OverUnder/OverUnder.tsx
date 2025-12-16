@@ -16,7 +16,7 @@ export const OverUnder: React.FC = () => {
           ? FINAL_TOTAL_TITLE
           : OVER_UNDER_TITLE}
       </StatLabel>
-      {isCompleted && homeScore !== undefined && awayScore !== undefined ? (
+      {isCompleted ? (
         <>
           <StatValue large>{homeScore + awayScore}</StatValue>
           <StatDetail>
