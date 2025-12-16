@@ -137,7 +137,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
             <TDSectionLabel>{TOUCHDOWNS_SCORED_TITLE}</TDSectionLabel>
             <SeasonTDGrid>
               {getWeeklyTDs(game.week).map((tds, index) => (
-                <TDSquare key={index} hasData={tds !== null} tdCount={tds}>
+                <TDSquare key={index} $hasData={tds !== null} $tdCount={tds}>
                   {tds !== null ? tds : "-"}
                 </TDSquare>
               ))}
@@ -145,7 +145,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
           </PlayerPick>
         </RecommendationSection>
 
-        <HoverOverlay visible={isDetailOpen}>
+        <HoverOverlay $visible={isDetailOpen}>
           <OverlayHeader>
             <OverlayTitle>{MATCHUP_ANALYSIS_TITLE}</OverlayTitle>
             <CloseButton onClick={() => setIsDetailOpen(false)}>
@@ -155,7 +155,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
 
           <MatchupsContainer>
             <MatchupRow>
-              <TeamStat side="away">
+              <TeamStat $side="away">
                 <StatTeam>
                   {game.awayTeam.abbreviation}
                   <InlineTeamLogo
@@ -164,12 +164,12 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   />
                 </StatTeam>
                 <MatchupStatLabel>{PASS_OFFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.awayTeam.passOffenseRank}>
+                <StatRank $rank={game.awayTeam.passOffenseRank}>
                   #{game.awayTeam.passOffenseRank}
                 </StatRank>
               </TeamStat>
               <MatchupGap
-                gap={Math.abs(
+                $gap={Math.abs(
                   game.awayTeam.passOffenseRank - game.homeTeam.passDefenseRank
                 )}
               >
@@ -177,7 +177,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   game.awayTeam.passOffenseRank - game.homeTeam.passDefenseRank
                 )}
               </MatchupGap>
-              <TeamStat side="home">
+              <TeamStat $side="home">
                 <StatTeam>
                   <InlineTeamLogo
                     src={getTeamLogoUrl(game.homeTeam.abbreviation)}
@@ -186,14 +186,14 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   {game.homeTeam.abbreviation}
                 </StatTeam>
                 <MatchupStatLabel>{PASS_DEFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.homeTeam.passDefenseRank}>
+                <StatRank $rank={game.homeTeam.passDefenseRank}>
                   #{game.homeTeam.passDefenseRank}
                 </StatRank>
               </TeamStat>
             </MatchupRow>
 
             <MatchupRow>
-              <TeamStat side="away">
+              <TeamStat $side="away">
                 <StatTeam>
                   {game.awayTeam.abbreviation}
                   <InlineTeamLogo
@@ -202,12 +202,12 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   />
                 </StatTeam>
                 <MatchupStatLabel>{RUSH_OFFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.awayTeam.rushOffenseRank}>
+                <StatRank $rank={game.awayTeam.rushOffenseRank}>
                   #{game.awayTeam.rushOffenseRank}
                 </StatRank>
               </TeamStat>
               <MatchupGap
-                gap={Math.abs(
+                $gap={Math.abs(
                   game.awayTeam.rushOffenseRank - game.homeTeam.rushDefenseRank
                 )}
               >
@@ -215,7 +215,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   game.awayTeam.rushOffenseRank - game.homeTeam.rushDefenseRank
                 )}
               </MatchupGap>
-              <TeamStat side="home">
+              <TeamStat $side="home">
                 <StatTeam>
                   <InlineTeamLogo
                     src={getTeamLogoUrl(game.homeTeam.abbreviation)}
@@ -224,7 +224,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   {game.homeTeam.abbreviation}
                 </StatTeam>
                 <MatchupStatLabel>{RUSH_DEFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.homeTeam.rushDefenseRank}>
+                <StatRank $rank={game.homeTeam.rushDefenseRank}>
                   #{game.homeTeam.rushDefenseRank}
                 </StatRank>
               </TeamStat>
@@ -233,7 +233,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
             <Divider />
 
             <MatchupRow>
-              <TeamStat side="away">
+              <TeamStat $side="away">
                 <StatTeam>
                   {game.homeTeam.abbreviation}
                   <InlineTeamLogo
@@ -242,12 +242,12 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   />
                 </StatTeam>
                 <MatchupStatLabel>{PASS_OFFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.homeTeam.passOffenseRank}>
+                <StatRank $rank={game.homeTeam.passOffenseRank}>
                   #{game.homeTeam.passOffenseRank}
                 </StatRank>
               </TeamStat>
               <MatchupGap
-                gap={Math.abs(
+                $gap={Math.abs(
                   game.homeTeam.passOffenseRank - game.awayTeam.passDefenseRank
                 )}
               >
@@ -255,7 +255,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   game.homeTeam.passOffenseRank - game.awayTeam.passDefenseRank
                 )}
               </MatchupGap>
-              <TeamStat side="home">
+              <TeamStat $side="home">
                 <StatTeam>
                   <InlineTeamLogo
                     src={getTeamLogoUrl(game.awayTeam.abbreviation)}
@@ -264,14 +264,14 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   {game.awayTeam.abbreviation}
                 </StatTeam>
                 <MatchupStatLabel>{PASS_DEFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.awayTeam.passDefenseRank}>
+                <StatRank $rank={game.awayTeam.passDefenseRank}>
                   #{game.awayTeam.passDefenseRank}
                 </StatRank>
               </TeamStat>
             </MatchupRow>
 
             <MatchupRow>
-              <TeamStat side="away">
+              <TeamStat $side="away">
                 <StatTeam>
                   {game.homeTeam.abbreviation}
                   <InlineTeamLogo
@@ -280,12 +280,12 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   />
                 </StatTeam>
                 <MatchupStatLabel>{RUSH_OFFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.homeTeam.rushOffenseRank}>
+                <StatRank $rank={game.homeTeam.rushOffenseRank}>
                   #{game.homeTeam.rushOffenseRank}
                 </StatRank>
               </TeamStat>
               <MatchupGap
-                gap={Math.abs(
+                $gap={Math.abs(
                   game.homeTeam.rushOffenseRank - game.awayTeam.rushDefenseRank
                 )}
               >
@@ -293,7 +293,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   game.homeTeam.rushOffenseRank - game.awayTeam.rushDefenseRank
                 )}
               </MatchupGap>
-              <TeamStat side="home">
+              <TeamStat $side="home">
                 <StatTeam>
                   <InlineTeamLogo
                     src={getTeamLogoUrl(game.awayTeam.abbreviation)}
@@ -302,7 +302,7 @@ export const GameCard: React.FC<GameCardProps> = ({ game }) => {
                   {game.awayTeam.abbreviation}
                 </StatTeam>
                 <MatchupStatLabel>{RUSH_DEFENSE_TITLE}</MatchupStatLabel>
-                <StatRank rank={game.awayTeam.rushDefenseRank}>
+                <StatRank $rank={game.awayTeam.rushDefenseRank}>
                   #{game.awayTeam.rushDefenseRank}
                 </StatRank>
               </TeamStat>

@@ -171,9 +171,9 @@ export const StatLabel = styled.div`
   `}
 `;
 
-export const StatValue = styled.div<{ large?: boolean }>`
-  ${({ theme, large }) => css`
-    font-size: ${large
+export const StatValue = styled.div<{ $large?: boolean }>`
+  ${({ theme, $large }) => css`
+    font-size: ${$large
       ? theme.typography.fontSize.xxl
       : theme.typography.fontSize.lg};
     font-weight: ${theme.typography.fontWeight.bold};
@@ -420,33 +420,33 @@ export const SeasonTDGrid = styled.div`
 `;
 
 export const TDSquare = styled.div<{
-  hasData: boolean;
-  tdCount: number | null;
+  $hasData: boolean;
+  $tdCount: number | null;
 }>`
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${({ theme, hasData, tdCount }) => {
-    if (!hasData || tdCount === null) return theme.colors.background.main;
-    if (tdCount === 0) return "#FF555522";
-    if (tdCount === 1) return "#FFB86C22";
-    if (tdCount >= 3) return "#50FA7B22";
+  background: ${({ theme, $hasData, $tdCount }) => {
+    if (!$hasData || $tdCount === null) return theme.colors.background.main;
+    if ($tdCount === 0) return "#FF555522";
+    if ($tdCount === 1) return "#FFB86C22";
+    if ($tdCount >= 3) return "#50FA7B22";
     return theme.colors.accent + "22";
   }};
-  color: ${({ theme, hasData, tdCount }) => {
-    if (!hasData || tdCount === null) return theme.colors.text.muted;
-    if (tdCount === 0) return "#FF5555";
-    if (tdCount === 1) return "#FFB86C";
-    if (tdCount >= 3) return "#50FA7B";
+  color: ${({ theme, $hasData, $tdCount }) => {
+    if (!$hasData || $tdCount === null) return theme.colors.text.muted;
+    if ($tdCount === 0) return "#FF5555";
+    if ($tdCount === 1) return "#FFB86C";
+    if ($tdCount >= 3) return "#50FA7B";
     return theme.colors.accent;
   }};
   border: 1px solid
-    ${({ theme, hasData, tdCount }) => {
-      if (!hasData || tdCount === null) return theme.colors.border.light;
-      if (tdCount === 0) return "#FF555544";
-      if (tdCount === 1) return "#FFB86C44";
-      if (tdCount >= 3) return "#50FA7B44";
+    ${({ theme, $hasData, $tdCount }) => {
+      if (!$hasData || $tdCount === null) return theme.colors.border.light;
+      if ($tdCount === 0) return "#FF555544";
+      if ($tdCount === 1) return "#FFB86C44";
+      if ($tdCount >= 3) return "#50FA7B44";
       return theme.colors.accent + "44";
     }};
   border-radius: ${({ theme }) => theme.borderRadius.sm};
@@ -460,8 +460,8 @@ export const TDSquare = styled.div<{
   }
 `;
 
-export const HoverOverlay = styled.div<{ visible: boolean }>`
-  ${({ theme, visible }) => css`
+export const HoverOverlay = styled.div<{ $visible: boolean }>`
+  ${({ theme, $visible }) => css`
     position: absolute;
     top: 0;
     left: 0;
@@ -473,8 +473,8 @@ export const HoverOverlay = styled.div<{ visible: boolean }>`
     border-radius: ${theme.borderRadius.xl};
     border: 1px solid ${theme.colors.border.medium};
     padding: ${theme.spacing.lg};
-    opacity: ${visible ? 1 : 0};
-    pointer-events: ${visible ? "all" : "none"};
+    opacity: ${$visible ? 1 : 0};
+    pointer-events: ${$visible ? "all" : "none"};
     transition: opacity ${theme.transitions.medium};
     overflow-y: auto;
     box-shadow: ${theme.shadows.xl};
@@ -543,11 +543,11 @@ export const MatchupRow = styled.div`
   `}
 `;
 
-export const TeamStat = styled.div<{ side: "away" | "home" }>`
-  ${({ theme, side }) => css`
+export const TeamStat = styled.div<{ $side: "away" | "home" }>`
+  ${({ theme, $side }) => css`
     display: flex;
     flex-direction: column;
-    align-items: ${side === "away" ? "flex-start" : "flex-end"};
+    align-items: ${$side === "away" ? "flex-start" : "flex-end"};
     gap: ${theme.spacing.xs};
   `}
 `;
@@ -585,11 +585,11 @@ const getRankColor = (rank: number) => {
   return "#EF4444";
 };
 
-export const StatRank = styled.div<{ rank: number }>`
-  ${({ theme, rank }) => css`
+export const StatRank = styled.div<{ $rank: number }>`
+  ${({ theme, $rank }) => css`
     font-size: ${theme.typography.fontSize.lg};
     font-weight: ${theme.typography.fontWeight.bold};
-    color: ${getRankColor(rank)};
+    color: ${getRankColor($rank)};
   `}
 `;
 
@@ -603,15 +603,15 @@ const getGapColor = (gap: number) => {
   return "#DC2626";
 };
 
-export const MatchupGap = styled.div<{ gap: number }>`
-  ${({ theme, gap }) => css`
+export const MatchupGap = styled.div<{ $gap: number }>`
+  ${({ theme, $gap }) => css`
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: ${getGapColor(gap)};
+    background: ${getGapColor($gap)};
     color: ${theme.colors.background.main};
     font-size: ${theme.typography.fontSize.lg};
     font-weight: ${theme.typography.fontWeight.bold};

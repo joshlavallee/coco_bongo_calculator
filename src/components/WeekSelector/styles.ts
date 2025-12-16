@@ -43,25 +43,25 @@ export const WeekGrid = styled.div`
 `;
 
 export const WeekPill = styled.button<{
-  selected: boolean;
-  isCurrent: boolean;
+  $selected: boolean;
+  $isCurrent: boolean;
 }>`
-  ${({ theme, selected, isCurrent }) => css`
+  ${({ theme, $selected, $isCurrent }) => css`
     position: relative;
-    background: ${selected
+    background: ${$selected
       ? theme.colors.accent
-      : isCurrent
+      : $isCurrent
       ? `${theme.colors.accent}33`
       : theme.colors.background.glass};
     backdrop-filter: blur(${theme.blur.sm});
     -webkit-backdrop-filter: blur(${theme.blur.sm});
     border: 2px solid
-      ${selected
+      ${$selected
         ? theme.colors.accent
-        : isCurrent
+        : $isCurrent
         ? theme.colors.accent
         : theme.colors.border.light};
-    color: ${selected
+    color: ${$selected
       ? theme.colors.background.main
       : theme.colors.text.primary};
     padding: ${theme.spacing.sm};
@@ -77,15 +77,15 @@ export const WeekPill = styled.button<{
     min-height: 65px;
     flex: 1;
     min-width: 55px;
-    transform: ${selected ? "scale(1.08)" : "scale(1)"};
-    margin-left: ${selected ? theme.spacing.sm : "0"};
-    margin-right: ${selected ? theme.spacing.sm : "0"};
+    transform: ${$selected ? "scale(1.08)" : "scale(1)"};
+    margin-left: ${$selected ? theme.spacing.sm : "0"};
+    margin-right: ${$selected ? theme.spacing.sm : "0"};
 
     &:hover {
       transform: scale(1.08);
       box-shadow: ${theme.shadows.md};
       border-color: ${theme.colors.accent};
-      background: ${selected
+      background: ${$selected
         ? theme.colors.accent
         : `${theme.colors.accent}22`};
     }

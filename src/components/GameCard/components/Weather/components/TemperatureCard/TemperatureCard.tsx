@@ -29,12 +29,11 @@ export const TemperatureCard: React.FC<TemperatureCardProps> = ({
     precipitationText,
     precipitationValue,
     precipitationType,
+    isDomeGame,
   } = weather || {};
 
   // TODO: Add the UI for the error state here
   if (error) return null;
-
-  console.log("precipitationType", precipitationType);
 
   return (
     <StatCard>
@@ -45,10 +44,10 @@ export const TemperatureCard: React.FC<TemperatureCardProps> = ({
         ) : (
           <>
             <WeatherIcon>
-              {temperatureValue ? (
-                getWeatherIcon(temperatureValue, precipitationValue)
-              ) : (
+              {isDomeGame ? (
                 <Home size={24} />
+              ) : (
+                getWeatherIcon(temperatureValue, precipitationValue)
               )}
             </WeatherIcon>
             <span>{temperatureText}</span>

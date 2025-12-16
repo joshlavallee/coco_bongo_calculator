@@ -20,15 +20,17 @@ export const NavContainer = styled.div`
   `}
 `;
 
-export const NavButton = styled.button<{ active: boolean }>`
-  ${({ theme, active }) => css`
+export const NavButton = styled.button<{ $active: boolean }>`
+  ${({ theme, $active }) => css`
     display: flex;
     align-items: center;
     gap: ${theme.spacing.sm};
     padding: ${theme.spacing.md} ${theme.spacing.lg};
     border-radius: ${theme.borderRadius.md};
-    background: ${active ? theme.colors.accent : "transparent"};
-    color: ${active ? theme.colors.background.main : theme.colors.text.primary};
+    background: ${$active ? theme.colors.accent : "transparent"};
+    color: ${$active
+      ? theme.colors.background.main
+      : theme.colors.text.primary};
     font-size: ${theme.typography.fontSize.md};
     font-weight: ${theme.typography.fontWeight.semibold};
     transition: all ${theme.transitions.fast};
@@ -36,7 +38,7 @@ export const NavButton = styled.button<{ active: boolean }>`
     justify-content: center;
 
     &:hover {
-      background: ${active ? theme.colors.accent : `${theme.colors.accent}22`};
+      background: ${$active ? theme.colors.accent : `${theme.colors.accent}22`};
     }
   `}
 `;

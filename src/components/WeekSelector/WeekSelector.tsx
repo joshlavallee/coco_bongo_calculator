@@ -34,8 +34,8 @@ export const WeekSelector: React.FC<WeekSelectorProps> = ({
           return (
             <WeekPill
               key={week}
-              selected={selectedWeek === week}
-              isCurrent={currentWeek === week}
+              $selected={selectedWeek === week}
+              $isCurrent={currentWeek === week}
               onClick={() => onWeekSelect(week)}
             >
               <WeekNumber>{week}</WeekNumber>

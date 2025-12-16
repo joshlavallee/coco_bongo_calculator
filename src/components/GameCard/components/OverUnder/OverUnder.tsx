@@ -18,14 +18,14 @@ export const OverUnder: React.FC = () => {
       </StatLabel>
       {isCompleted ? (
         <>
-          <StatValue large>{homeScore + awayScore}</StatValue>
+          <StatValue $large>{homeScore + awayScore}</StatValue>
           <StatDetail>
             {awayScore} - {homeScore}
           </StatDetail>
         </>
       ) : overUnder !== null ? (
         <>
-          <StatValue large>{overUnder}</StatValue>
+          <StatValue $large>{overUnder}</StatValue>
           <StatDetail>{TOTAL_POINTS_TITLE}</StatDetail>
         </>
       ) : (

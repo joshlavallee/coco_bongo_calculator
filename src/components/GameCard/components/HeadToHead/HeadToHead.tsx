@@ -24,13 +24,15 @@ export const HeadToHead: React.FC<HeadToHeadProps> = ({
         {displayScorers.map((scorer, index) => (
           <TDScorerItem key={index}>
             <TDScorerName>{scorer.name}</TDScorerName>
-            <TDScorerCount tdCount={scorer.count}>{scorer.count}</TDScorerCount>
+            <TDScorerCount $tdCount={scorer.count}>
+              {scorer.count}
+            </TDScorerCount>
           </TDScorerItem>
         ))}
         {fifthRow && (
           <TDScorerItem>
             <TDScorerName>{fifthRow.name}</TDScorerName>
-            <TDScorerCount tdCount={fifthRow.count}>
+            <TDScorerCount $tdCount={fifthRow.count}>
               {fifthRow.count}
             </TDScorerCount>
           </TDScorerItem>

@@ -6,7 +6,9 @@ import {
 import { useGame } from "../../../context/GameContext";
 import { DOME_TEAMS } from "../../../constants";
 
-export const useWeatherData = (): UseQueryResult<GameWeather | null> => {
+export const useWeatherData = (): UseQueryResult<
+  (GameWeather & { isDomeGame: boolean }) | null
+> => {
   const { homeTeam, gameTime } = useGame();
 
   const city = homeTeam.name.split(" ").slice(0, -1).join(" ");
@@ -23,6 +25,9 @@ export const useWeatherData = (): UseQueryResult<GameWeather | null> => {
     enabled: !isDomeTeam,
     staleTime: 5 * 60 * 1000,
     refetchInterval: isDomeTeam ? false : 5 * 60 * 1000,
-    select: (data) => (isDomeTeam ? null : data),
+    placeholderData: isDomeTeam
+      ? ({ isDomeGame: true } as GameWeather)
+      : undefined,
+    select: (data) => (data ? { ...data, isDomeGame: isDomeTeam } : null),
   });
 };

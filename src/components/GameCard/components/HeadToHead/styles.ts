@@ -53,33 +53,33 @@ export const TDScorerName = styled.span`
   `}
 `;
 
-export const TDScorerCount = styled.div<{ tdCount: number }>`
-  ${({ theme, tdCount }) => css`
+export const TDScorerCount = styled.div<{ $tdCount: number }>`
+  ${({ theme, $tdCount }) => css`
     min-width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: ${tdCount === 0
+    background: ${$tdCount === 0
       ? "#FF555522"
-      : tdCount === 1
+      : $tdCount === 1
       ? "#FFB86C22"
-      : tdCount >= 3
+      : $tdCount >= 3
       ? "#50FA7B22"
       : theme.colors.accent + "22"};
-    color: ${tdCount === 0
+    color: ${$tdCount === 0
       ? "#FF5555"
-      : tdCount === 1
+      : $tdCount === 1
       ? "#FFB86C"
-      : tdCount >= 3
+      : $tdCount >= 3
       ? "#50FA7B"
       : theme.colors.accent};
     border: 1px solid
-      ${tdCount === 0
+      ${$tdCount === 0
         ? "#FF555544"
-        : tdCount === 1
+        : $tdCount === 1
         ? "#FFB86C44"
-        : tdCount >= 3
+        : $tdCount >= 3
         ? "#50FA7B44"
         : theme.colors.accent + "44"};
     border-radius: ${theme.borderRadius.sm};

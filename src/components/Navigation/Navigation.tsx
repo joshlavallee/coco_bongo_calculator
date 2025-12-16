@@ -10,14 +10,14 @@ export const Navigation: React.FC<NavigationProps> = ({
   return (
     <NavContainer>
       <NavButton
-        active={activePage === "season"}
+        $active={activePage === "season"}
         onClick={() => onPageChange("season")}
       >
         <Calendar size={20} />
         <span>{SEASON_TAB_LABEL}</span>
       </NavButton>
       <NavButton
-        active={activePage === "performance"}
+        $active={activePage === "performance"}
         onClick={() => onPageChange("performance")}
       >
         <BarChart3 size={20} />

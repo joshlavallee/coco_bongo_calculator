@@ -34,7 +34,7 @@ export const getWeeklyTDs = (currentWeek: number) => {
 };
 
 export const getWeatherIcon = (
-  temperatureValue: number,
+  temperatureValue = 0,
   precipitationValue = 0
 ) => {
   if (precipitationValue > 0) {

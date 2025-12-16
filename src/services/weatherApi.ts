@@ -32,6 +32,7 @@ export interface GameWeather {
   precipitationText: string;
   precipitationValue: number;
   precipitationType: string | null;
+  isDomeGame?: boolean;
 }
 
 export const getKickoffWeather = async (
@@ -65,21 +66,39 @@ export const getKickoffWeather = async (
 
     if (index === -1) return "No data found for that hour.";
 
+    const endIndex = Math.min(index + 3, hourly.time.length);
+    const hoursToAverage = endIndex - index;
+
+    const avgTemperature =
+      hourly.temperature_2m
+        .slice(index, endIndex)
+        .reduce((sum, temp) => sum + temp, 0) / hoursToAverage;
+
+    const avgPrecipitation =
+      hourly.precipitation
+        .slice(index, endIndex)
+        .reduce((sum, precip) => sum + precip, 0) / hoursToAverage;
+
+    const avgWind =
+      hourly.wind_speed_10m
+        .slice(index, endIndex)
+        .reduce((sum, wind) => sum + wind, 0) / hoursToAverage;
+
     return {
       location: `${name}, ${admin1}`,
       time: hourly.time[index],
-      temperatureText: `${hourly.temperature_2m[index]}${hourly_units.temperature_2m}`,
-      temperatureValue: hourly.temperature_2m[index],
-      windText: `${hourly.wind_speed_10m[index]} ${hourly_units.wind_speed_10m}`,
-      windValue: hourly.wind_speed_10m[index],
-      precipitationText: `${hourly.precipitation[index]} ${hourly_units.precipitation}`,
-      precipitationValue: hourly.precipitation[index],
+      temperatureText: `${Math.round(avgTemperature)}${
+        hourly_units.temperature_2m
+      }`,
+      temperatureValue: Math.round(avgTemperature),
+      windText: `${Math.round(avgWind)} ${hourly_units.wind_speed_10m}`,
+      windValue: Math.round(avgWind),
+      precipitationText: `${avgPrecipitation.toFixed(1)} ${
+        hourly_units.precipitation
+      }`,
+      precipitationValue: parseFloat(avgPrecipitation.toFixed(1)),
       precipitationType:
-        hourly.precipitation[index] > 0
-          ? hourly.temperature_2m[index] < 0
-            ? "Snow"
-            : "Rain"
-          : null,
+        avgPrecipitation > 0 ? (avgTemperature < 0 ? "Snow" : "Rain") : null,
     };
   } catch (error) {
     console.error("Error fetching weather:", error);
